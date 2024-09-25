@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "scheme": "TRESBLAZERS",
+    "web": {
+      "bundler": "metro"
+    },
+    "name": "TRESBLAZERS",
+    "slug": "TRESBLAZERS"
+  }
+}
