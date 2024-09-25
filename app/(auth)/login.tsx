@@ -4,16 +4,27 @@ import { Pressable, StyleSheet, Text, View, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TextInput } from "react-native-gesture-handler";
 import { useAuth } from "../../context/auth";
+import { emailValidator } from "../helpers/emailValidator";
+import { passwordValidator } from "../helpers/passwordValidator"; 
 
 export default function Login() {
   const router = useRouter();
-  const [email, setEmail] = useState("user123");
-  const [password, setPassword] = useState("password123");
+  const [email, setEmail] = useState({ value: "", error: "" });
+  const [password, setPassword] = useState({ value: "", error: "" });
   const { signIn } = useAuth();
 
   const onLogin = async () => {
-    await AsyncStorage.setItem("user", JSON.stringify({ email, password }));
-    signIn({ email, password });
+    const emailError = emailValidator(email.value);
+    const passwordError = passwordValidator(password.value);
+
+    if (emailError || passwordError) {
+      setEmail({ ...email, error: emailError });
+      setPassword({ ...password, error: passwordError });
+      return;
+    }
+
+    await AsyncStorage.setItem("user", JSON.stringify({ email: email.value, password: password.value }));
+    signIn({ email: email.value, password: password.value });
   };
 
   return (
@@ -27,17 +38,20 @@ export default function Login() {
 
       <TextInput
         style={styles.textInput}
-        value={email}
+        value={email.value}
         placeholder="Type email"
-        onChangeText={(text) => setEmail(text)}
+        onChangeText={(text) => setEmail({ value: text, error: '' })}
       />
+      {email.error ? <Text style={styles.errorText}>{email.error}</Text> : null}
+
       <TextInput
         style={styles.textInput}
-        value={password}
-        onChangeText={(text) => setPassword(text)}
+        value={password.value}
+        onChangeText={(text) => setPassword({ value: text, error: '' })}
         placeholder="Type password"
         secureTextEntry
       />
+      {password.error ? <Text style={styles.errorText}>{password.error}</Text> : null}
 
       <Pressable onPress={onLogin} style={styles.loginButton}>
         <Text style={styles.loginText}>Log in</Text>
@@ -110,5 +124,10 @@ const styles = StyleSheet.create({
   registerText: {
     color: "#0B4522", 
     fontSize: 16,
+  },
+  errorText: {
+    color: "red",
+    marginBottom: 20,
+    textAlign: "center",
   },
 });

@@ -2,19 +2,42 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, View, Image } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
+import { emailValidator } from "../helpers/emailValidator"; 
+import { passwordValidator } from "../helpers/passwordValidator"; 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { nameValidator } from "../helpers/nameValidator";
 
 export default function Register() {
   const router = useRouter();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState({ value: "", error: "" });
+  const [email, setEmail] = useState({ value: "", error: "" });
+  const [password, setPassword] = useState({ value: "", error: "" });
 
-  const onRegister = () => {
+  const onRegister = async () => {
+    const emailError = emailValidator(email.value);
+    const passwordError = passwordValidator(password.value);
+    const nameError = nameValidator(name.value); 
+
+    if (emailError || passwordError || nameError) {
+      setName({ ...name, error: nameError });
+      setEmail({ ...email, error: emailError });
+      setPassword({ ...password, error: passwordError });
+      return;
+    }
+
+    try {
+      await AsyncStorage.setItem('userEmail', email.value);
+      await AsyncStorage.setItem('userPassword', password.value);
+      console.log('User credentials stored');
+      router.push("/home");
+    } catch (e) {
+      console.error('Failed to save credentials');
+    }
   };
 
   return (
     <View style={styles.container}>
-        <Text style={styles.backText}>{"<"}</Text>
+      <Text style={styles.backText}>{"<"}</Text>
       <Image
         source={require("../../assets/app.png")}
         style={styles.logo}
@@ -23,23 +46,28 @@ export default function Register() {
 
       <TextInput
         style={styles.textInput}
-        value={name}
+        value={name.value}
         placeholder="Name"
-        onChangeText={(text) => setName(text)}
+        onChangeText={(text) => setName({ value: text, error: "" })}
       />
+      {name.error ? <Text style={styles.errorText}>{name.error}</Text> : null}
+
       <TextInput
         style={styles.textInput}
-        value={email}
+        value={email.value}
         placeholder="Email"
-        onChangeText={(text) => setEmail(text)}
+        onChangeText={(text) => setEmail({ value: text, error: "" })}
       />
+      {email.error ? <Text style={styles.errorText}>{email.error}</Text> : null}
+
       <TextInput
         style={styles.textInput}
-        value={password}
+        value={password.value}
         placeholder="Password"
         secureTextEntry
-        onChangeText={(text) => setPassword(text)}
+        onChangeText={(text) => setPassword({ value: text, error: "" })}
       />
+      {password.error ? <Text style={styles.errorText}>{password.error}</Text> : null}
 
       <Pressable onPress={onRegister} style={styles.nextButton}>
         <Text style={styles.nextText}>Next</Text>
@@ -60,11 +88,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#FAF7F7",
     paddingHorizontal: 20,
-  },
-  backButton: {
-    position: "absolute",
-    top: 50,
-    left: 20,
   },
   backText: {
     fontSize: 24,
@@ -110,5 +133,10 @@ const styles = StyleSheet.create({
   loginText: {
     color: "#0B4522",
     fontSize: 16,
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 10,
+    alignSelf: 'flex-start',
   },
 });
