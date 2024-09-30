@@ -24,7 +24,7 @@ export default function AuthLayout() {
   if (!isReady)
     return (
       <View style={styles.loading}>
-        <Text>Loading...</Text>
+        <Text>LOADING...</Text>
       </View>
     );
 

@@ -8,7 +8,7 @@ export default function MainLayout() {
         drawerPosition: "left",
       }}
     >
-      <Drawer.Screen name="HOME" />
+      <Drawer.Screen name="home" />
     </Drawer>
   );
 }
