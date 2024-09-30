@@ -6,6 +6,7 @@ import { emailValidator } from "../helpers/emailValidator";
 import { passwordValidator } from "../helpers/passwordValidator"; 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { nameValidator } from "../helpers/nameValidator";
+import React from "react";
 
 export default function Register() {
   const router = useRouter();
