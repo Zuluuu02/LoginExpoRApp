@@ -6,6 +6,7 @@ import { TextInput } from "react-native-gesture-handler";
 import { useAuth } from "../../context/auth";
 import { emailValidator } from "../helpers/emailValidator";
 import { passwordValidator } from "../helpers/passwordValidator"; 
+import React from "react";
 
 export default function Login() {
   const router = useRouter();

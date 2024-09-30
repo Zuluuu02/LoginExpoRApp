@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { Stack } from "expo-router";
 import { Provider, UserCredentials } from "../context/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import React from "react";
 
 export default function AuthLayout() {
   const [isReady, setIsReady] = useState(false);

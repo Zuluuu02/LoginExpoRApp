@@ -2,6 +2,7 @@ import { Button, Pressable, StyleSheet, Text, View } from "react-native";
 import { useAuth } from "../../../context/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
+import React from "react";
 
 export default function Profile() {
   const { signOut } = useAuth();
