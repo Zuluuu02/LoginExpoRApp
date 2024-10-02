@@ -13,9 +13,9 @@ export default function Login() {
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
   const { signIn } = useAuth();
-  const [isFormValid, setIsFormValid] = useState(false); // State for form validation
+  const [isFormValid, setIsFormValid] = useState(false); 
 
-  // useEffect to validate email and password when they change
+  
   useEffect(() => {
     const emailError = emailValidator(email.value);
     const passwordError = passwordValidator(password.value);
@@ -25,7 +25,7 @@ export default function Login() {
     } else {
       setIsFormValid(false);
     }
-  }, [email, password]); // Dependencies: it runs every time email or password changes
+  }, [email, password]); 
 
   const onLogin = async () => {
     const emailError = emailValidator(email.value);
