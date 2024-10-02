@@ -1,11 +1,11 @@
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Pressable, StyleSheet, Text, View, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TextInput } from "react-native-gesture-handler";
 import { useAuth } from "../../context/auth";
 import { emailValidator } from "../helpers/emailValidator";
-import { passwordValidator } from "../helpers/passwordValidator"; 
+import { passwordValidator } from "../helpers/passwordValidator";
 import React from "react";
 
 export default function Login() {
@@ -13,6 +13,19 @@ export default function Login() {
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
   const { signIn } = useAuth();
+  const [isFormValid, setIsFormValid] = useState(false); // State for form validation
+
+  // useEffect to validate email and password when they change
+  useEffect(() => {
+    const emailError = emailValidator(email.value);
+    const passwordError = passwordValidator(password.value);
+
+    if (!emailError && !passwordError) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+  }, [email, password]); // Dependencies: it runs every time email or password changes
 
   const onLogin = async () => {
     const emailError = emailValidator(email.value);
@@ -54,7 +67,7 @@ export default function Login() {
       />
       {password.error ? <Text style={styles.errorText}>{password.error}</Text> : null}
 
-      <Pressable onPress={onLogin} style={styles.loginButton}>
+      <Pressable onPress={onLogin} style={styles.loginButton} disabled={!isFormValid}>
         <Text style={styles.loginText}>Log in</Text>
       </Pressable>
 
