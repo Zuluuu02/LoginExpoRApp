@@ -67,7 +67,7 @@ export default function Login() {
       />
       {password.error ? <Text style={styles.errorText}>{password.error}</Text> : null}
 
-      <Pressable onPress={onLogin} style={styles.loginButton} disabled={!isFormValid}>
+      <Pressable onPress={onLogin} style={styles.loginButton}>
         <Text style={styles.loginText}>Log in</Text>
       </Pressable>
 
