@@ -15,6 +15,7 @@ export default function HomeLayout() {
           tabBarIcon: ({ color }) => (
             <FontAwesome name="home" size={24} color={color} />
           ),
+          headerShown: false,
         }}
       />
       <Tabs.Screen
@@ -23,14 +24,16 @@ export default function HomeLayout() {
           tabBarIcon: ({ color }) => (
             <FontAwesome name="search" size={24} color={color} />
           ),
+          headerShown: false,
         }}
       />
       <Tabs.Screen
-        name="notification"
+        name="grades"
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome name="bell" size={24} color={color} />
           ),
+          headerShown: false,
         }}
       />
       <Tabs.Screen
@@ -39,6 +42,7 @@ export default function HomeLayout() {
           tabBarIcon: ({ color }) => (
             <FontAwesome name="user" size={24} color={color} />
           ),
+          headerShown: false,
         }}
       />
     </Tabs>
