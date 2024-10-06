@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useContext, createContext, useMemo } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { useTheme } from "../../../context/ThemeContext";
 
 const GradesContext = createContext({
   memoizedGrades: [],
@@ -46,45 +47,46 @@ export default function App() {
 
 function Grades() {
   const { memoizedGrades, loading } = useContext(GradesContext);
+  const { isDarkMode } = useTheme();
 
   const renderItem = ({ item }) => (
-    <View style={styles.row}>
-      <Text style={styles.cell}>{item.code}</Text>
-      <Text style={styles.cell}>{item.descriptive}</Text>
-      <Text style={styles.cell}>{item.units}</Text>
-      <Text style={styles.cell}>{item.section}</Text>
-      <Text style={styles.cell}>{item.midterm}</Text>
-      <Text style={styles.cell}>{item.final}</Text>
-      <Text style={styles.cell}>{item.reExam}</Text>
-      <Text style={styles.cell}>{item.status}</Text>
+    <View style={[styles.row, { borderBottomColor: isDarkMode ? '#666' : '#ddd' }]}>
+      <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>{item.code}</Text>
+      <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>{item.descriptive}</Text>
+      <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>{item.units}</Text>
+      <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>{item.section}</Text>
+      <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>{item.midterm}</Text>
+      <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>{item.final}</Text>
+      <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>{item.reExam}</Text>
+      <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>{item.status}</Text>
     </View>
   );
 
   if (loading) {
     return (
-      <View style={styles.container}>
-        <Text>Loading grades...</Text>
+      <View style={[styles.container, { backgroundColor: isDarkMode ? '#333' : '#fff' }]}>
+        <Text style={{ color: isDarkMode ? '#fff' : '#000' }}>Loading grades...</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Report of Grades</Text>
+    <View style={[styles.container, { backgroundColor: isDarkMode ? '#333' : '#fff' }]}>
+      <Text style={[styles.title, { color: isDarkMode ? '#fff' : '#000' }]}>Report of Grades</Text>
       <FlatList
         data={memoizedGrades}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         ListHeaderComponent={() => (
-          <View style={styles.header}>
-            <Text style={styles.cell}>Code</Text>
-            <Text style={styles.cell}>Descriptive</Text>
-            <Text style={styles.cell}>Units</Text>
-            <Text style={styles.cell}>Section</Text>
-            <Text style={styles.cell}>Midterm</Text>
-            <Text style={styles.cell}>Final</Text>
-            <Text style={styles.cell}>Re-Exam</Text>
-            <Text style={styles.cell}>Status</Text>
+          <View style={[styles.header, { backgroundColor: isDarkMode ? '#444' : '#f0f0f0' }]}>
+            <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>Code</Text>
+            <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>Descriptive</Text>
+            <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>Units</Text>
+            <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>Section</Text>
+            <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>Midterm</Text>
+            <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>Final</Text>
+            <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>Re-Exam</Text>
+            <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>Status</Text>
           </View>
         )}
       />

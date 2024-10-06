@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Stack } from "expo-router";
-import { Provider, UserCredentials } from "../context/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React from "react";
+import { Stack } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { Provider, UserCredentials } from "../context/auth";
+import { ThemeProvider } from "../context/ThemeContext";
 
-export default function AuthLayout() {
+export default function RootLayout() {
   const [isReady, setIsReady] = useState(false);
   const [loadedUser, setLoadedUser] = useState<UserCredentials | null>(null);
 
@@ -29,13 +29,15 @@ export default function AuthLayout() {
     );
 
   return (
-    <Provider userCredentials={loadedUser}>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      ></Stack>
-    </Provider>
+    <ThemeProvider>
+      <Provider userCredentials={loadedUser}>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        />
+      </Provider>
+    </ThemeProvider>
   );
 }
 

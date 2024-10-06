@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TextInput, FlatList, TouchableOpacity } from "react-native";
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useTheme } from "../../../context/ThemeContext";
 
 export default function Feed() {
+  const { isDarkMode } = useTheme();
   const [tasks, setTasks] = useState([]); 
   const [task, setTask] = useState(""); 
 
@@ -20,8 +22,8 @@ export default function Feed() {
   };
 
   const renderItem = ({ item }) => (
-    <View style={styles.taskContainer}>
-      <Text style={styles.task}>{item.text}</Text>
+    <View style={[styles.taskContainer, { borderBottomColor: isDarkMode ? '#666' : '#ccc' }]}>
+      <Text style={[styles.task, { color: isDarkMode ? '#fff' : '#000' }]}>{item.text}</Text>
       <TouchableOpacity onPress={() => removeTask(item.id)} style={styles.deleteButton}>
         <Text style={styles.deleteText}>Delete</Text>
       </TouchableOpacity>
@@ -29,11 +31,12 @@ export default function Feed() {
   );
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>TASK NOTE REMINDER</Text>
+    <View style={[styles.container, { backgroundColor: isDarkMode ? '#333' : '#fff' }]}>
+      <Text style={[styles.title, { color: isDarkMode ? '#fff' : '#000' }]}>TASK NOTE REMINDER</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, { color: isDarkMode ? '#fff' : '#000', borderColor: isDarkMode ? '#666' : '#ddd' }]}
         placeholder="Add a new task..."
+        placeholderTextColor={isDarkMode ? '#aaa' : '#999'}
         value={task}
         onChangeText={setTask}
       />
@@ -63,7 +66,6 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ddd",
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,

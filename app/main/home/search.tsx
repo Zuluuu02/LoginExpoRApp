@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from "react";
-import { StyleSheet, Text, View, FlatList, TextInput } from "react-native";
+import React, { useMemo, useState } from "react";
+import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
+import { useTheme } from "../../../context/ThemeContext";
 
 const students = [
   { name: "Xyrille Uy", email: "xyrilleuy@gmail.com", yearLevel: "Senior", department: "Computer Science" },
@@ -18,6 +19,7 @@ const students = [
 
 export default function Search() {
   const [searchQuery, setSearchQuery] = useState("");
+  const { isDarkMode } = useTheme();
 
   const filteredStudents = useMemo(() => {
     return students.filter((student) =>
@@ -28,20 +30,24 @@ export default function Search() {
   }, [searchQuery]);
 
   const renderItem = ({ item }) => (
-    <View style={styles.row}>
-      <Text style={styles.cell}>{item.name}</Text>
-      <Text style={styles.cell}>{item.email}</Text>
-      <Text style={styles.cell}>{item.yearLevel}</Text>
-      <Text style={styles.cell}>{item.department}</Text>
+    <View style={[styles.row, { borderBottomColor: isDarkMode ? '#666' : '#ddd' }]}>
+      <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>{item.name}</Text>
+      <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>{item.email}</Text>
+      <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>{item.yearLevel}</Text>
+      <Text style={[styles.cell, { color: isDarkMode ? '#fff' : '#000' }]}>{item.department}</Text>
     </View>
   );
 
   return (
-    <View style={styles.container}>
-  
+    <View style={[styles.container, { backgroundColor: isDarkMode ? '#333' : '#fff' }]}>
       <TextInput
-        style={styles.searchBar}
+        style={[styles.searchBar, { 
+          color: isDarkMode ? '#fff' : '#000',
+          borderColor: isDarkMode ? '#666' : '#ddd',
+          backgroundColor: isDarkMode ? '#444' : '#fff'
+        }]}
         placeholder="Search..."
+        placeholderTextColor={isDarkMode ? '#aaa' : '#999'}
         value={searchQuery}
         onChangeText={setSearchQuery}
       />
@@ -51,11 +57,11 @@ export default function Search() {
         keyExtractor={(item) => item.email}
         renderItem={renderItem}
         ListHeaderComponent={() => (
-          <View style={styles.header}>
-            <Text style={[styles.cell, styles.bold]}>Name</Text>
-            <Text style={[styles.cell, styles.bold]}>Email</Text>
-            <Text style={[styles.cell, styles.bold]}>Year Level</Text>
-            <Text style={[styles.cell, styles.bold]}>Department</Text>
+          <View style={[styles.header, { backgroundColor: isDarkMode ? '#444' : '#f0f0f0' }]}>
+            <Text style={[styles.cell, styles.bold, { color: isDarkMode ? '#fff' : '#000' }]}>Name</Text>
+            <Text style={[styles.cell, styles.bold, { color: isDarkMode ? '#fff' : '#000' }]}>Email</Text>
+            <Text style={[styles.cell, styles.bold, { color: isDarkMode ? '#fff' : '#000' }]}>Year Level</Text>
+            <Text style={[styles.cell, styles.bold, { color: isDarkMode ? '#fff' : '#000' }]}>Department</Text>
           </View>
         )}
       />
@@ -95,5 +101,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-
-
