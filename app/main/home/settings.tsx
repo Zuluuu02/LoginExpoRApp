@@ -1,9 +1,26 @@
-import React from 'react';
-import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { useTheme } from '../../../context/ThemeContext';
 
 const Settings = () => {
   const { isDarkMode, toggleTheme } = useTheme();
+  const [notifications, setNotifications] = useState(false);
+  const [autoUpdate, setAutoUpdate] = useState(false);
+  const [dataUsage, setDataUsage] = useState('Low');
+
+  const toggleNotifications = () => setNotifications(prev => !prev);
+  const toggleAutoUpdate = () => setAutoUpdate(prev => !prev);
+
+  const handleDataUsageChange = () => {
+    // Cycle through data usage options
+    setDataUsage(current => {
+      switch (current) {
+        case 'Low': return 'Medium';
+        case 'Medium': return 'High';
+        default: return 'Low';
+      }
+    });
+  };
 
   return (
     <ScrollView style={[styles.container, isDarkMode ? styles.darkMode : styles.lightMode]}>
@@ -84,6 +101,14 @@ const styles = StyleSheet.create({
   },
   lightText: {
     color: '#333',
+  },
+  touchableItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
 });
 
