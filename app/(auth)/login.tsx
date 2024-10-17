@@ -1,12 +1,12 @@
 import { useRouter } from "expo-router";
-import { useState, useEffect } from "react";
-import { Pressable, StyleSheet, Text, View, Image } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import React, { useEffect, useState } from "react";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { useAuth } from "../../context/auth";
+import { auth } from "../../FirebaseConfig";
 import { emailValidator } from "../helpers/emailValidator";
 import { passwordValidator } from "../helpers/passwordValidator";
-import React from "react";
 
 export default function Login() {
   const router = useRouter();
@@ -37,8 +37,14 @@ export default function Login() {
       return;
     }
 
-    await AsyncStorage.setItem("user", JSON.stringify({ email: email.value, password: password.value }));
-    signIn({ email: email.value, password: password.value });
+    try {
+      await signInWithEmailAndPassword(auth, email.value, password.value);
+      console.log('User logged in successfully');
+      signIn({ email: email.value, password: password.value });
+    } catch (error) {
+      console.error('Login error:', error);
+      // Handle specific error cases and show appropriate messages
+    }
   };
 
   return (

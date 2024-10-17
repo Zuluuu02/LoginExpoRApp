@@ -1,12 +1,13 @@
 import { useRouter } from "expo-router";
-import { useState } from "react";
-import { Pressable, StyleSheet, Text, View, Image } from "react-native";
+import React, { useState } from "react";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import { emailValidator } from "../helpers/emailValidator"; 
-import { passwordValidator } from "../helpers/passwordValidator"; 
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { emailValidator } from "../helpers/emailValidator";
 import { nameValidator } from "../helpers/nameValidator";
-import React from "react";
+import { passwordValidator } from "../helpers/passwordValidator";
+
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "../../FirebaseConfig";
 
 export default function Register() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function Register() {
   const onRegister = async () => {
     const emailError = emailValidator(email.value);
     const passwordError = passwordValidator(password.value);
-    const nameError = nameValidator(name.value); 
+    const nameError = nameValidator(name.value);
 
     if (emailError || passwordError || nameError) {
       setName({ ...name, error: nameError });
@@ -27,12 +28,13 @@ export default function Register() {
     }
 
     try {
-      await AsyncStorage.setItem('userEmail', email.value);
-      await AsyncStorage.setItem('userPassword', password.value);
-      console.log('User credentials stored');
-      router.push("/home");
-    } catch (e) {
-      console.error('Failed to save credentials');
+      const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value);
+      await updateProfile(userCredential.user, { displayName: name.value });
+      console.log('User registered successfully');
+      router.push("/login");
+    } catch (error) {
+      console.error('Registration error:', error);
+      // Handle specific error cases and show appropriate messages
     }
   };
 
