@@ -1,7 +1,7 @@
 import { useRouter } from "expo-router";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useEffect, useState } from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import { useAuth } from "../../context/auth";
 import { auth } from "../../FirebaseConfig";
@@ -43,7 +43,11 @@ export default function Login() {
       signIn({ email: email.value, password: password.value });
     } catch (error) {
       console.error('Login error:', error);
-      // Handle specific error cases and show appropriate messages
+      Alert.alert(
+        "Login Failed",
+        "The email or password you entered is incorrect. Please try again.",
+        [{ text: "OK" }]
+      );
     }
   };
 
