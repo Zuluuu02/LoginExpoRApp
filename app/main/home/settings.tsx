@@ -18,6 +18,39 @@ const Settings = () => {
           thumbColor={isDarkMode ? "#f5dd4b" : "#f4f3f4"}
         />
       </View>
+
+      <View style={styles.settingItem}>
+        <Text style={[styles.text, isDarkMode ? styles.darkText : styles.lightText]}>
+          Notifications
+        </Text>
+        <Switch
+          value={notifications}
+          onValueChange={toggleNotifications}
+          trackColor={{ false: "#767577", true: "#81b0ff" }}
+          thumbColor={notifications ? "#f5dd4b" : "#f4f3f4"}
+        />
+      </View>
+
+      <View style={styles.settingItem}>
+        <Text style={[styles.text, isDarkMode ? styles.darkText : styles.lightText]}>
+          Auto Update
+        </Text>
+        <Switch
+          value={autoUpdate}
+          onValueChange={toggleAutoUpdate}
+          trackColor={{ false: "#767577", true: "#81b0ff" }}
+          thumbColor={autoUpdate ? "#f5dd4b" : "#f4f3f4"}
+        />
+      </View>
+
+      <TouchableOpacity style={styles.settingItem} onPress={handleDataUsageChange}>
+        <Text style={[styles.text, isDarkMode ? styles.darkText : styles.lightText]}>
+          Data Usage
+        </Text>
+        <Text style={[styles.subText, isDarkMode ? styles.darkText : styles.lightText]}>
+          {dataUsage}
+        </Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
